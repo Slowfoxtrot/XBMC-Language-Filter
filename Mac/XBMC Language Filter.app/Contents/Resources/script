@@ -1,4 +1,14 @@
 #!/bin/bash
+#
+#	XBMC Language Filter
+# 
+#	Created by Brock Haymond 9/6/12.
+#	Copyright (c) 2012 Brock Haymond <http://brockhaymond.com>.  All rights reserved.
+#
+# 	Bash script to call perl script "parse_srt.pl" recursively, capture running time, and output the logfile.
+#	
+#	This script is designed to work specifically with Platypus.
+#
 
 if [ "$#" -lt 1 ]
 then
