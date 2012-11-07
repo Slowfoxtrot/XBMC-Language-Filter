@@ -12,7 +12,7 @@
 
 if [ "$#" -lt 1 ]
 then
-	echo "Usage: create_edl.command [subtitle.srt]" 
+	echo "Usage: parse_srt.pl [subtitle.srt] or [subtitles folder]" 
 	exit 1
 fi
 
@@ -60,7 +60,7 @@ printf -v TIME "%0.3F"  $(echo "$end - $begin"|bc )
 if [ -z "$RESULT" ]
 then
   echo "Enjoy!"
-  RESULT="$INDEX file(s) successfully processed in $TIME seconds.\nA subtitle.edl has been created and placed in the same directory as the original subtitle.srt."
+  RESULT="$INDEX subtitle(s) successfully processed in $TIME seconds.\nAn EDL file has been created and placed in the same directory as the original SRT file."
 /usr/bin/osascript << EOT
 tell app "XBMC Language Filter"
 	 Activate
@@ -70,7 +70,7 @@ EOT
 
 else
   echo "There were build errors, please check the log file in your home directory."
-  RESULT="$INDEX file(s) successfully processed in $TIME seconds.\n$RESULT"
+  RESULT="$INDEX subtitle(s) successfully processed in $TIME seconds.\n$RESULT"
   /usr/bin/osascript << EOT
 tell app "XBMC Language Filter"
 	 Activate
