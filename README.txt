@@ -29,7 +29,16 @@ The action to take is "1" for mute.  The "MPlayer" file structure is
 further explained here, along with other supported actions (such as 
 removing a scene completely):
 
-http://wiki.xbmc.org/index.php?title=Edit_decision_list#MPlayer_EDL  
+http://wiki.xbmc.org/index.php?title=Edit_decision_list#MPlayer_EDL 
+
+
+Download
+________
+I have provided pre-compiled versions for each operating system on my 
+website.  The code provided on github is meant for development purposes 
+only.
+
+http://brockhaymond.com/Software.html
 
 
 How to Use
