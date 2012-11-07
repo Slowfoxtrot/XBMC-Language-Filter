@@ -49,8 +49,8 @@ same directory as the movie.
 
 4.  The EDL file and movie have to have the exact same name.  If they 
 do not have the SAME NAME and are located in the SAME DIRECTORY, XBMC 
-will not find the EDL file when the movie is played and it will not be 
-edited.
+will not find the EDL file when the movie is played and the movie will 
+not be edited.
 
 5.  Enjoy your movie edited!
 
