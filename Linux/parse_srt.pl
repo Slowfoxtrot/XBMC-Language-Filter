@@ -14,8 +14,10 @@
 #	The "subtitle_file.edl" file will be output into the same directory as the original subtitle.srt file.
 #
 
+use Time::Seconds;
+
 if($ARGV[$0] eq "") {
-	print "Usage: perl parse_srt.pl [subtitle.srt]\n";
+	print "Usage: perl parse_srt.pl --offset=seconds --pad=seconds [subtitle.srt]\n";
 	print "Output: subtitle.edl\n";
 	exit 1;
 }
@@ -33,13 +35,22 @@ if(!open PROFC, "pcontains.txt") {print "Couldn't open profanities contains file
 chomp(@pcontains);
 close(PROFC);
 
-$edl = $ARGV[$0];
+$offset = $ARGV[0];
+$offset =~ s/--offset=//;
+$offset = int($offset);
+
+$pad = $ARGV[1];
+$pad =~ s/--pad=//;
+$pad = int($pad);
+
+$file = $ARGV[2];
+$edl = $file;
 $edl =~ s/srt/edl/;
 
-if(!open TXT, "$ARGV[$0]") {print "Couldn't open file '$ARGV[$0]:' $!.\r\n"; exit 1;}
+if(!open TXT, "$file") {print "Couldn't open file '$file:' $!.\r\n"; exit 1;}
 if(!open EDL, ">$edl") {print "$!\r\n"; exit 1;}
 
-if($verbose) {print "Processing $ARGV[$0]\nWriting to $edl\n";}
+if($verbose) {print "Processing $file\nWriting to $edl\n";}
 
 undef $/;
 $file = <TXT>;
@@ -60,21 +71,25 @@ foreach $block (@block) {
   $found |= exists $pmatchhash{lc($_)} foreach (@words);
   
   if($found) {
-	#print "$lines[1]\n$block\n\n";
-	$lines[1] =~ s/,/\./g;
-    	my @times = split(' --> ', $lines[1]);
-	$start = parsetime($times[0]);
-	$end = parsetime($times[1]);
-	print EDL "$start     \t$end     \t1\n";
+	  #print "$lines[1]\n$block\n\n";
+	  $lines[1] =~ s/,/\./g;
+    my @times = split(' --> ', $lines[1]);
+	  $start = parsetime($times[0], $offset - $pad);
+    $end = parsetime($times[1], $offset + $pad);
+    print EDL "$start\t$end\t1\r\n";
   }
 }
 
 if($verbose) {print "Finished parsing $ARGV[$0]\n";}
 
 sub parsetime {
+  my $offset = $_[1];
   my @time = split(':', $_[0]);
-  $time = $time[0]*3600 + $time[1]*60 + $time[2];
-  return sprintf "%.2f", $time;
+  $time = $time[0]*3600 + $time[1]*60 + $time[2] + $offset;
+  my $hours = int($time / 3600); $time = $time % 3600;
+  my $minutes = int($time / 60); $time = $time % 60;
+  my $seconds = $time;
+  return sprintf "%02d:%02d:%02d", $hours, $minutes, $seconds;
 }
 	
 close(TXT);
